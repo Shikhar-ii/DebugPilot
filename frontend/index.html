@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#19201e">
+  <title>DebugPilot | Incident workspace</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/polish.css">
+  <script src="/assets/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#overview"><span class="brand-mark">D<i></i></span><span>debugpilot<small>ENGINEERING OBSERVABILITY</small></span></a>
+      <div class="workspace-switch"><span class="workspace-dot"></span><span>Local workspace<small>Personal environment</small></span><span class="chevron">⌄</span></div>
+      <p class="nav-label">WORKSPACE</p>
+      <nav class="primary-nav" aria-label="Main navigation">
+        <a class="nav-link active" href="#overview" data-page="overview"><span class="nav-icon">◫</span>Overview</a>
+        <a class="nav-link" href="#services" data-page="services"><span class="nav-icon">◈</span>Services<span class="nav-count" id="service-nav-count">3</span></a>
+        <a class="nav-link" href="#incidents" data-page="incidents"><span class="nav-icon">◇</span>Incidents<span class="nav-count" id="incident-nav-count">0</span></a>
+        <a class="nav-link" href="#investigation" data-page="investigation"><span class="nav-icon">⌕</span>Investigation</a>
+        <a class="nav-link" href="#tests" data-page="tests"><span class="nav-icon">✓</span>Test results</a>
+        <a class="nav-link" href="#reports" data-page="reports"><span class="nav-icon">▤</span>Reports</a>
+      </nav>
+      <p class="nav-label settings-label">CONFIGURATION</p>
+      <nav class="primary-nav" aria-label="Configuration"><a class="nav-link" href="#settings" data-page="settings"><span class="nav-icon">⚙</span>Settings</a></nav>
+      <div class="sidebar-bottom">
+        <div class="api-health"><span class="pulse-dot"></span><span>Local API<small id="api-status">Connecting...</small></span></div>
+        <div class="profile"><span class="avatar">DP</span><span>Developer<small>Local account</small></span><span class="more">···</span></div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar"><div class="breadcrumbs"><span>Workspace</span><span class="crumb-slash">/</span><strong id="topbar-page">Overview</strong></div><div class="topbar-actions"><span class="live-state"><span class="pulse-dot"></span>EVENT INTAKE</span><button class="button button-primary" id="open-event"><span class="plus">+</span> Send sample event</button></div></header>
+
+      <section class="page active" id="page-overview">
+        <div class="page-heading"><div><p class="eyebrow">MONITORING / LOCAL</p><h1>Overview</h1><p class="lede">A clear view of what your services have actually reported.</p></div><div class="updated-label">Last refreshed <span id="last-refreshed">--</span></div></div>
+        <div class="metric-grid">
+          <article class="metric"><div class="metric-label">TOTAL INCIDENTS <span class="metric-icon icon-coral">◇</span></div><div class="metric-value" id="metric-total">0</div><div class="metric-note">Recorded from incoming events</div></article>
+          <article class="metric"><div class="metric-label">ACTIVE ERRORS <span class="metric-icon icon-amber">!</span></div><div class="metric-value" id="metric-active">0</div><div class="metric-note">Unresolved grouped incidents</div></article>
+          <article class="metric"><div class="metric-label">SERVICES <span class="metric-icon icon-green">◈</span></div><div class="metric-value" id="metric-services">3</div><div class="metric-note">Observed health from event intake</div></article>
+          <article class="metric metric-health"><div class="metric-label">SERVICE HEALTH <span class="metric-icon icon-green">↗</span></div><div class="health-value"><span class="health-dot"></span><span id="health-summary">Awaiting events</span></div><div class="metric-note" id="health-detail">No service signals received yet</div></article>
+        </div>
+        <div class="overview-grid">
+          <section class="panel"><div class="panel-heading"><div><h2>Monitored services</h2><p>Health is derived from received events</p></div><a class="text-link" href="#services" data-page="services">View services <span>→</span></a></div><div class="service-list" id="overview-services"></div></section>
+          <section class="panel"><div class="panel-heading"><div><h2>Recent incidents</h2><p>Grouped by service, route and error</p></div><a class="text-link" href="#incidents" data-page="incidents">All incidents <span>→</span></a></div><div id="overview-incidents" class="compact-incident-list"></div></section>
+        </div>
+        <section class="panel event-panel"><div class="panel-heading"><div><h2>Recent activity</h2><p>Events are timestamped by the API when received</p></div><span class="data-label"><span class="pulse-dot"></span>LIVE DATA</span></div><div id="overview-events" class="activity-list"></div></section>
+        <div class="intake-strip"><span class="intake-symbol">↳</span><div><strong>Connect an application</strong><span>POST structured events to <code>/api/events</code> on this machine. Only HTTP 5xx responses open incidents.</span></div><button class="button button-quiet" data-page="settings">View intake details <span>→</span></button></div>
+      </section>
+
+      <section class="page" id="page-services"><div class="page-heading"><div><p class="eyebrow">WORKSPACE / INVENTORY</p><h1>Services</h1><p class="lede">Applications observed by DebugPilot’s event intake.</p></div><button class="button button-secondary" id="refresh-services">↻ Refresh</button></div><section class="panel table-panel"><div class="table-heading"><h2>Service inventory</h2><span class="subtle-count" id="service-total">3 services</span></div><div class="table-scroll"><table><thead><tr><th>APPLICATION</th><th>HEALTH</th><th>EVENTS RECEIVED</th><th>LAST EVENT</th><th></th></tr></thead><tbody id="services-table"></tbody></table></div></section></section>
+
+      <section class="page" id="page-incidents"><div class="page-heading"><div><p class="eyebrow">WORKSPACE / RESPONSE</p><h1>Incidents</h1><p class="lede">Distinct error groups from observed HTTP failures.</p></div><button class="button button-secondary" id="refresh-incidents">↻ Refresh</button></div><div class="filter-row"><div class="segmented" role="group" aria-label="Filter incidents"><button class="segment active" data-filter="all">All</button><button class="segment" data-filter="active">Active</button><button class="segment" data-filter="resolved">Resolved</button></div><span class="filter-meta" id="incident-filter-meta">0 incidents</span></div><section class="panel table-panel"><div class="table-scroll"><table><thead><tr><th>INCIDENT</th><th>SERVICE / ROUTE</th><th>SEVERITY</th><th>OCCURRENCES</th><th>STATUS</th><th>FIRST SEEN</th></tr></thead><tbody id="incidents-table"></tbody></table></div></section></section>
+
+      <section class="page" id="page-investigation">
+        <div class="page-heading investigation-heading"><div><p class="eyebrow">WORKSPACE / INCIDENT ANALYSIS</p><h1>Investigation</h1><p class="lede">Evidence, timeline and a clearly labeled working hypothesis.</p></div><label class="incident-picker-label" for="investigation-select">INCIDENT<select id="investigation-select"><option value="">Select an incident</option></select></label></div>
+        <div id="investigation-empty" class="empty-state panel"><div class="empty-orbit">⌕</div><h2>No incident selected</h2><p>Send or select a service error to begin an evidence-backed investigation.</p><button class="button button-primary" id="empty-send-event">Send sample event</button></div>
+        <div id="investigation-content" class="investigation-layout" hidden>
+          <div class="investigation-main">
+            <section class="panel incident-summary"><div class="incident-summary-top"><div><div class="incident-id-line"><span class="severity-badge" id="investigation-severity"></span><span class="incident-id" id="investigation-id"></span></div><h2 id="investigation-error"></h2><p id="investigation-route"></p></div><button class="button button-secondary" id="investigate-button">Start investigation</button></div><div class="summary-meta"><span><i>SERVICE</i><b id="investigation-service"></b></span><span><i>OCCURRENCES</i><b id="investigation-occurrences"></b></span><span><i>FIRST OBSERVED</i><b id="investigation-created"></b></span><span><i>STATUS</i><b id="investigation-status"></b></span></div></section>
+            <section class="panel"><div class="panel-heading"><div><h2>Event timeline</h2><p>Times reflect when the API recorded each event</p></div><span class="data-label" id="timeline-count">0 EVENTS</span></div><div class="timeline" id="investigation-timeline"></div></section>
+            <section class="panel"><div class="panel-heading"><div><h2>Captured evidence</h2><p>Original service event, with common secret fields redacted</p></div></div><pre id="evidence-json"></pre></section>
+          </div>
+          <aside class="investigation-aside"><section class="hypothesis-card"><div class="hypothesis-top"><span class="hypothesis-mark">?</span><span class="hypothesis-label">WORKING HYPOTHESIS</span></div><h2 id="root-cause-title">Investigation not started</h2><p id="root-cause-copy">Start an investigation to review the error signal. Findings remain suspected until verified by a developer.</p><div class="confidence-row"><span>Rule-based confidence estimate</span><strong id="confidence-value">--</strong></div><div class="confidence-track"><span id="confidence-track-fill"></span></div><div class="hypothesis-footnote">Not calibrated. This is not a confirmed root cause.</div></section>
+            <section class="panel next-steps"><h3>Investigation actions</h3><button class="action-row" id="generate-test"><span class="action-symbol">✓</span><span><strong>Generate detector check</strong><small>Creates a safe validation proposal</small></span><span>→</span></button><button class="action-row" id="execute-test"><span class="action-symbol">▷</span><span><strong>Execute check</strong><small>Runs built-in evidence validation</small></span><span>→</span></button><button class="action-row" id="generate-report"><span class="action-symbol">▤</span><span><strong>Generate report</strong><small>Download incident evidence</small></span><span>→</span></button><button class="resolve-button" id="resolve-incident">Mark incident resolved</button></section></aside>
+        </div>
+      </section>
+
+      <section class="page" id="page-tests"><div class="page-heading"><div><p class="eyebrow">WORKSPACE / VALIDATION</p><h1>Test results</h1><p class="lede">Safe detector checks against captured evidence. Application replay is not yet connected.</p></div><span class="scope-tag">LOCAL CHECKS ONLY</span></div><section class="panel table-panel"><div class="table-heading"><h2>Generated checks</h2><span class="subtle-count" id="test-total">0 checks</span></div><div class="table-scroll"><table><thead><tr><th>CHECK</th><th>INCIDENT</th><th>CREATED</th><th>RESULT</th><th>EXECUTED</th></tr></thead><tbody id="tests-table"></tbody></table></div></section><div class="notice-strip"><span>i</span><p>Generated code is never executed. The current runner performs a built-in evidence-presence check; it does not run tests against the monitored application.</p></div></section>
+
+      <section class="page" id="page-reports"><div class="page-heading"><div><p class="eyebrow">WORKSPACE / DOCUMENTATION</p><h1>Reports</h1><p class="lede">Downloadable records of observed incidents and investigation activity.</p></div></div><section class="panel table-panel"><div class="table-heading"><h2>Generated reports</h2><span class="subtle-count" id="report-total">0 reports</span></div><div class="table-scroll"><table><thead><tr><th>REPORT</th><th>INCIDENT</th><th>GENERATED</th><th>FORMAT</th><th></th></tr></thead><tbody id="reports-table"></tbody></table></div></section></section>
+
+      <section class="page" id="page-settings"><div class="page-heading"><div><p class="eyebrow">WORKSPACE / CONFIGURATION</p><h1>Settings</h1><p class="lede">Local event intake and monitoring behavior.</p></div></div><div class="settings-layout">
+        <section class="panel settings-panel"><div class="settings-title"><span class="settings-icon">⌘</span><div><h2>Event intake</h2><p>Send structured service events to the local API.</p></div></div><div class="setting-row"><div><strong>Endpoint</strong><small>Accepts JSON events from local applications</small></div><code class="endpoint-code">POST /api/events</code></div><div class="setting-row"><div><strong>Incident rule</strong><small>Events with status codes 500-599 create or group incidents</small></div><span class="rule-status">ACTIVE</span></div><div class="setting-row"><div><strong>Error grouping</strong><small>Same service, route, error class and message share an active incident</small></div><span class="rule-status">ACTIVE</span></div><div class="setting-row"><div><strong>Data storage</strong><small>Local SQLite database; timestamps use UTC</small></div><span class="rule-status rule-neutral">LOCAL</span></div><div class="setting-row"><div><strong>Secret redaction</strong><small>Common password, token, secret and API key assignments are masked</small></div><span class="rule-status">ACTIVE</span></div></section>
+        <section class="panel settings-panel"><div class="settings-title"><span class="settings-icon integration-icon">{ }</span><div><h2>Send a service event</h2><p>Use this example in a local service or send one from the dashboard.</p></div></div><pre class="code-sample">curl -X POST http://127.0.0.1:8000/api/events \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "service": "payment-service",
+    "endpoint": "/api/payments",
+    "status_code": 500,
+    "error": "Database connection timeout",
+    "trace_id": "trace-123"
+  }'</pre><button class="button button-secondary" id="copy-curl">Copy command</button><p class="settings-caveat">This MVP receives events when applications send them. It does not yet install agents or poll services.</p></section>
+      </div><div class="notice-strip"><span>i</span><p>This local development MVP has no API authentication, remote access, AI model integration, distributed tracing, or sandboxed application test runner. Keep it bound to localhost.</p></div></section>
+      <footer class="app-footer"><span>DEBUGPILOT <i>LOCAL MVP</i></span><span>Event records are stored on this machine</span></footer>
+    </main>
+  </div>
+
+  <dialog id="event-dialog" class="event-dialog"><form id="event-form" method="dialog"><div class="dialog-header"><div><p class="eyebrow">EVENT INTAKE</p><h2>Send a sample event</h2></div><button class="dialog-close" type="button" id="close-event" aria-label="Close">×</button></div><p class="dialog-copy">This submits an event to the local API. Its timestamp is assigned when the API receives it.</p><label>Service<select name="service"><option>payment-service</option><option>user-service</option><option>product-service</option></select></label><label>Endpoint<input name="endpoint" value="/api/payments" required></label><div class="form-row"><label>HTTP status<select name="status_code"><option value="500">500 · Internal server error</option><option value="503">503 · Service unavailable</option><option value="502">502 · Bad gateway</option><option value="200">200 · Successful request</option></select></label><label>Trace ID<input name="trace_id" value="trace-demo-001"></label></div><label>Error or message<textarea name="error" rows="3">Database connection timeout</textarea></label><div class="dialog-footer"><span>Stored in local SQLite storage.</span><button class="button button-primary" type="submit">Submit event <span>→</span></button></div></form></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

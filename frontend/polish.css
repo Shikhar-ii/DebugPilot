@@ -1,0 +1,299 @@
+:root {
+  --sidebar: #fff;
+  --line: #e7eae4;
+  --paper: #fff;
+  --lime: #d7edca;
+  --ink: #232a24;
+  --muted: #737c73;
+  background: #f7f8f5;
+}
+
+body {
+  color: var(--ink);
+  background: #f7f8f5;
+  font-size: 13px;
+}
+
+.sidebar {
+  border-right: 1px solid #e8ebe5;
+  padding: 22px 13px 14px;
+  color: #29312a;
+}
+
+.brand {
+  color: #232a24;
+}
+
+.brand small,
+.workspace-switch small,
+.profile small,
+.api-health small {
+  color: #899188;
+}
+
+.brand-mark {
+  background: #d6ebca;
+  color: #315a3b;
+}
+
+.brand-mark i {
+  background: #315a3b;
+}
+
+.workspace-switch {
+  border-color: #e7eae4;
+  color: #3b443c;
+  background: #fbfcfa;
+}
+
+.workspace-dot {
+  background: #7aa56e;
+}
+
+.nav-label {
+  color: #929a91;
+}
+
+.nav-link {
+  color: #657066;
+  font-size: 12px;
+}
+
+.nav-link:hover {
+  background: #f5f7f3;
+  color: #29392c;
+}
+
+.nav-link.active {
+  background: #eff5eb;
+  color: #345b3c;
+  font-weight: 600;
+}
+
+.nav-link.active .nav-icon {
+  color: #4a784d;
+}
+
+.nav-icon {
+  color: #849087;
+}
+
+.nav-count {
+  background: #edf0ea;
+  color: #657065;
+}
+
+.api-health {
+  border-color: #e7eae4;
+  color: #39433a;
+}
+
+.avatar {
+  background: #edf3e9;
+  color: #4a7049;
+}
+
+.more {
+  color: #899188;
+}
+
+.main-area {
+  padding-inline: clamp(20px, 3.2vw, 46px);
+}
+
+.topbar {
+  border-color: #e7eae4;
+}
+
+.page {
+  padding-top: 34px;
+}
+
+.page-heading {
+  margin-bottom: 27px;
+}
+
+.page-heading h1 {
+  color: #202820;
+}
+
+.lede {
+  color: #727b72;
+}
+
+.metric-grid,
+.overview-grid,
+.investigation-layout,
+.settings-layout {
+  gap: 15px;
+}
+
+.metric,
+.panel {
+  border-color: #e7eae4;
+  border-radius: 7px;
+  box-shadow: 0 1px 2px #20282008;
+}
+
+.metric {
+  padding: 17px 18px;
+}
+
+.metric-label,
+.eyebrow,
+th {
+  color: #7e887d;
+}
+
+.metric-value {
+  color: #263028;
+}
+
+.panel-heading,
+.table-heading {
+  padding-inline: 18px;
+}
+
+.panel-heading h2,
+.table-heading h2 {
+  color: #303a31;
+  font-size: 13px;
+}
+
+.panel-heading p {
+  color: #7d867c;
+}
+
+.service-list,
+.compact-incident-list,
+.activity-list {
+  padding-inline: 18px;
+}
+
+.service-row,
+.compact-incident,
+.activity-item {
+  border-color: #eff1ed;
+}
+
+.service-name,
+.compact-title,
+.activity-description {
+  color: #394239;
+}
+
+.button-primary {
+  background: #3f7048;
+  color: #fff;
+}
+
+.button-primary:hover {
+  background: #345f3d;
+}
+
+.button-secondary {
+  border-color: #dfe4dc;
+  color: #465348;
+}
+
+.button-quiet,
+.text-link,
+.incident-link {
+  color: #456c49;
+}
+
+.intake-strip {
+  background: #f0f5eb;
+  border-color: #e1ead9;
+}
+
+.intake-strip strong {
+  color: #344435;
+}
+
+.table-panel {
+  box-shadow: 0 1px 2px #20282008;
+}
+
+th {
+  background: #f8faf7;
+}
+
+td {
+  color: #535d54;
+}
+
+tbody tr:hover {
+  background: #fbfcfa;
+}
+
+.incident-summary,
+.next-steps,
+.settings-panel {
+  padding: 18px;
+}
+
+.hypothesis-card {
+  background: #f1f5ed;
+  border-color: #e1e9da;
+}
+
+.hypothesis-card h2 {
+  color: #344435;
+}
+
+.hypothesis-card > p,
+.hypothesis-footnote {
+  color: #697569;
+}
+
+.action-row:hover {
+  background: #fafbf9;
+}
+
+.action-symbol {
+  background: #eef4e9;
+  color: #4d754d;
+}
+
+.event-dialog {
+  border-color: #e3e7df;
+  box-shadow: 0 18px 60px #1e2b2030;
+}
+
+.event-dialog input:focus,
+.event-dialog select:focus,
+.event-dialog textarea:focus,
+.incident-picker-label select:focus {
+  outline: 2px solid #a9c99a;
+  outline-offset: 1px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #7fa875;
+  outline-offset: 2px;
+}
+
+@media (max-width: 760px) {
+  .sidebar {
+    padding-inline: 7px;
+  }
+
+  .page {
+    padding-top: 25px;
+  }
+
+  .metric-grid {
+    gap: 9px;
+  }
+
+  .metric {
+    padding: 13px;
+  }
+
+  .panel-heading,
+  .table-heading {
+    padding-inline: 13px;
+  }
+}
